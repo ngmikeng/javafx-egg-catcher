@@ -1,6 +1,7 @@
 plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'com.eggcatcher'
@@ -38,5 +39,20 @@ sourceSets {
 jar {
     manifest {
         attributes 'Main-Class': 'com.eggcatcher.game.EggCatcherApp'
+    }
+}
+
+// Fat JAR — bundles all dependencies (including JavaFX + native libs) into one file.
+// Run:  ./gradlew shadowJar
+// Output: build/libs/javafx-egg-catcher-1.0.0-all.jar
+// Launch: java -jar build/libs/javafx-egg-catcher-1.0.0-all.jar
+shadowJar {
+    mergeServiceFiles()
+    // Excluding module-info.class lets the JAR run on the classpath (unnamed module),
+    // which is required for a fat JAR. The Launcher main class bypasses the
+    // JavaFX module-path check that would otherwise reject this.
+    exclude 'module-info.class'
+    manifest {
+        attributes 'Main-Class': 'com.eggcatcher.game.Launcher'
     }
 }

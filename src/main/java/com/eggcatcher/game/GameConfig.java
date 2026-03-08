@@ -15,7 +15,7 @@ import javafx.scene.input.KeyCode;
 public final class GameConfig {
 
     private GameConfig() {
-        // Prevent instantiation — constants-only class
+        // Prevent instantiation - constants-only class
     }
 
     // ── Screen ──────────────────────────────────────────────────────────────
@@ -27,7 +27,7 @@ public final class GameConfig {
     public static final int SCREEN_HEIGHT = 600;
 
     /** Title displayed in the window title bar. */
-    public static final String WINDOW_TITLE = "Egg Catcher — JavaFX";
+    public static final String WINDOW_TITLE = "Egg Catcher - JavaFX";
 
     // ── Basket ──────────────────────────────────────────────────────────────
 

@@ -79,7 +79,7 @@ public class MenuScene {
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 54));
         titleLabel.setTextFill(Color.GOLD);
 
-        Label subtitle = new Label("Catch the eggs — dodge the droppings!");
+        Label subtitle = new Label("Catch the eggs - dodge the droppings!");
         subtitle.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
         subtitle.setTextFill(Color.color(1, 1, 1, 0.8));
 

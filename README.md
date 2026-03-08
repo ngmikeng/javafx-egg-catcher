@@ -23,6 +23,9 @@ cd javafx-egg-catcher
 
 # Build a JAR
 .\gradlew.bat build
+
+# Build a fat-JAR
+.\gradlew.bat shadowJar
 ```
 
 ## Controls

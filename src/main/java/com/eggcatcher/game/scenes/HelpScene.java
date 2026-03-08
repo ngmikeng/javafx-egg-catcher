@@ -52,15 +52,15 @@ public class HelpScene {
         content.getChildren().add(gap(8));
         content.getChildren().add(line("Move basket:   Arrow Keys  or  Mouse", body));
         content.getChildren().add(line("Catch falling eggs to earn points.", body));
-        content.getChildren().add(line("Avoid bird droppings — each one costs a life.", body));
+        content.getChildren().add(line("Avoid bird droppings - each one costs a life.", body));
         content.getChildren().add(line("Miss 3 eggs off-screen and it's game over.", body));
         content.getChildren().add(line("Every 20 points advances you to the next level.", body));
-        content.getChildren().add(line("Speed increases with each level — good luck!", body));
+        content.getChildren().add(line("Speed increases with each level - good luck!", body));
         content.getChildren().add(gap(12));
         content.getChildren().add(label("Spawn Extra Birds:", bold, Color.GOLD));
-        content.getChildren().add(line("G  —  Spawn a Chicken   (slow layer, low droppings)", body));
-        content.getChildren().add(line("V  —  Spawn a Duck      (medium speed, more droppings)", body));
-        content.getChildren().add(line("N  —  Spawn a Muscovy   (fast, lots of droppings)", body));
+        content.getChildren().add(line("G  -  Spawn a Chicken   (slow layer, low droppings)", body));
+        content.getChildren().add(line("V  -  Spawn a Duck      (medium speed, more droppings)", body));
+        content.getChildren().add(line("N  -  Spawn a Muscovy   (fast, lots of droppings)", body));
         content.getChildren().add(gap(20));
         content.getChildren().add(MenuScene.menuButton("Back to Menu", onBack));
 
