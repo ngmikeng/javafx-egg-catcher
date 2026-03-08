@@ -157,6 +157,23 @@ public class GameLoop extends AnimationTimer {
     }
 
     /**
+     * Pauses the game loop. The last rendered frame remains on the canvas.
+     * Call {@link #resume()} to continue.
+     */
+    public void pause() {
+        stop(); // AnimationTimer.stop()
+    }
+
+    /**
+     * Resumes a paused game loop.
+     * Resets the frame timer so there is no physics jump from the pause gap.
+     */
+    public void resume() {
+        previousTime = -1; // prevent huge delta after the pause gap
+        start(); // AnimationTimer.start()
+    }
+
+    /**
      * Restarts the game: resets state, clears entities, creates fresh ones.
      */
     private void restart() {
