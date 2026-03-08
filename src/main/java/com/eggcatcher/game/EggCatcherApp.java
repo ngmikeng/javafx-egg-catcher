@@ -1,19 +1,22 @@
 package com.eggcatcher.game;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import com.eggcatcher.game.scenes.HelpScene;
+import com.eggcatcher.game.scenes.MenuScene;
 import com.eggcatcher.game.systems.InputManager;
 
 /**
  * Main application entry point for the Egg Catcher game.
  * <p>
- * Sets up the JavaFX window, canvas, input handlers, and starts the game loop.
- * Replaces the original Swing {@code JFrame} with a proper JavaFX
- * {@link Application} subclass.
+ * Owns the primary {@link Stage} and drives navigation between the main menu,
+ * help screen, and the game itself. The menu is shown first; from there the
+ * player can start a game, read the rules, or exit.
  * </p>
  *
  * @author Egg Catcher Team
@@ -21,14 +24,40 @@ import com.eggcatcher.game.systems.InputManager;
  */
 public class EggCatcherApp extends Application {
 
+    private Stage primaryStage;
+    private GameLoop gameLoop;
+
     /**
-     * JavaFX application entry point. Sets up the stage, scene, canvas,
-     * input wiring, and starts the game loop.
+     * JavaFX application entry point. Configures the window and shows the
+     * main menu as the initial scene.
      *
      * @param primaryStage the primary window provided by the JavaFX platform
      */
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        primaryStage.setTitle(GameConfig.WINDOW_TITLE);
+        primaryStage.setResizable(false);
+        showMenu();
+        primaryStage.centerOnScreen();
+        primaryStage.show();
+    }
+
+    // ── Scene navigation ─────────────────────────────────────────────────────
+
+    private void showMenu() {
+        if (gameLoop != null) {
+            gameLoop.stop();
+            gameLoop = null;
+        }
+        primaryStage.setScene(new MenuScene(this::startGame, this::showHelp, Platform::exit).getScene());
+    }
+
+    private void showHelp() {
+        primaryStage.setScene(new HelpScene(this::showMenu).getScene());
+    }
+
+    private void startGame() {
         // ── Canvas ──────────────────────────────────────────────────────────
         Canvas canvas = new Canvas(GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
 
@@ -38,28 +67,25 @@ public class EggCatcherApp extends Application {
 
         // ── Input Manager ───────────────────────────────────────────────────
         InputManager inputManager = new InputManager();
-
-        scene.setOnKeyPressed(event -> inputManager.onKeyPressed(event.getCode()));
-        scene.setOnKeyReleased(event -> inputManager.onKeyReleased(event.getCode()));
-        scene.setOnMouseMoved(event -> inputManager.onMouseMoved(event.getX()));
+        scene.setOnKeyPressed(e  -> inputManager.onKeyPressed(e.getCode()));
+        scene.setOnKeyReleased(e -> inputManager.onKeyReleased(e.getCode()));
+        scene.setOnMouseMoved(e  -> inputManager.onMouseMoved(e.getX()));
 
         // ── Game Loop ───────────────────────────────────────────────────────
-        GameLoop gameLoop = new GameLoop(canvas, inputManager);
+        gameLoop = new GameLoop(canvas, inputManager);
         gameLoop.start();
 
-        // ── Stage Configuration ─────────────────────────────────────────────
-        primaryStage.setTitle(GameConfig.WINDOW_TITLE);
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.centerOnScreen();
-        primaryStage.setOnCloseRequest(event -> {
-            gameLoop.stop();
-        });
-        primaryStage.show();
+    }
 
-        // Ensure the canvas can receive key events
-        canvas.setFocusTraversable(true);
-        canvas.requestFocus();
+    // ── Lifecycle ────────────────────────────────────────────────────────────
+
+    /**
+     * Called by JavaFX on application shutdown. Stops the game loop.
+     */
+    @Override
+    public void stop() {
+        if (gameLoop != null) gameLoop.stop();
     }
 
     /**
